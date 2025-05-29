@@ -144,11 +144,11 @@ zabbix_update () {
 		rm -fr /root/zabbix_agentd*
 		#rm -fr $arquivotar
 
-		service zabbix-agent restart
+		service zabbix-agent2 restart
 
 		echo
 		echo -e "\e[1;31mZabbix configurado com sucesso.\e[0m"
-		echo -e "\e[1;31mUtilize o nome \e[1;36m" `$zabbixexec -t system.hostname | cut -f 2 -d "|" | cut -d "]" -f 1` "\e[1;31m para configurar o host\e[0m"
+		#echo -e "\e[1;31mUtilize o nome \e[1;36m" `$zabbixexec -t system.hostname | cut -f 2 -d "|" | cut -d "]" -f 1` "\e[1;31m para configurar o host\e[0m"
 		sleep 3;
 		echo
 		main
