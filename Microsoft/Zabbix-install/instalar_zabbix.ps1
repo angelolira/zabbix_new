@@ -19,7 +19,7 @@ exit
 
 'running with full privileges'
 
-$url = "http://172.16.0.109/install/zabbix-agent.zip"
+$url = "https://github.com/angelolira/zabbix_new/tree/main/Microsoft/Zabbix-install/zabbix-agent.zip"
 
 $destino = "C:\zabbix-agent.zip"
 
