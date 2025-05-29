@@ -1,0 +1,4 @@
+Restaurar usuários excluidos 
+Get-ADObject -Filter {displayName -eq "Adriana Queiroz Palmieri Ferreira"} -IncludeDeletedObjects | Restore-ADObject
+Pesquisar
+Get-ADObject -ldapFilter:"(msDS-LastKnownRDN=*)" -IncludeDeletedObjects
