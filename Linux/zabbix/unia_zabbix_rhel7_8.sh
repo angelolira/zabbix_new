@@ -6,7 +6,7 @@ arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/m
 arquivotar="zabbix_agentd2.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
-zabbixdirextra="/etc/zabbix/zabbix_agentd.d"
+zabbixdirextra="/etc/zabbix/zabbix_agentd2.d"
 validaversaoSO=$(uname -r | cut -f 6 -d ".")
 
 #System#
