@@ -2,7 +2,7 @@
 clear
 
 #Variaveis de ambiente
-arquivosdl="https://github.com/angelolira/zabbix_new/blob/main/Linux/zabbix/zabbix_agentd.conf"
+arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd.conf"
 arquivotar="zabbix_agentd.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
