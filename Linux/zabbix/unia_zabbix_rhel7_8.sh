@@ -168,7 +168,7 @@ zabbix_remove () {
 
 	if [ $? -eq 0 ];then
 		
-		yum remove zabbix-agent -y
+		yum remove zabbix-agent2 -y
 	 	rpm -e zabbix-release
 		
 		if [ -d $zabbixdir ];then
