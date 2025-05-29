@@ -3,8 +3,8 @@ clear
 
 #Variaveis de ambiente
 arquivosdl="https://github.com/angelolira/zabbix_new/blob/main/Linux/zabbix/zabbix_agentd.conf"
-#arquivotar="zabbix_agentd.conf"
-zabbixconf="zabbix_agentd.conf"
+arquivotar="zabbix_agentd.conf"
+#zabbixconf="zabbix_agentd.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
 zabbixdirextra="/etc/zabbix/zabbix_agentd.d"
