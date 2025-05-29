@@ -2,8 +2,8 @@
 clear
 
 #Variaveis de ambiente
-arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd.conf"
-arquivotar="zabbix_agentd.conf"
+arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2.conf"
+arquivotar="zabbix_agentd2.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
 zabbixdirextra="/etc/zabbix/zabbix_agentd.d"
@@ -74,8 +74,8 @@ zabbix_install () {
 				
 			if [ $? -eq 0 ]; then
 
-				yum install -y zabbix-agent 
-				systemctl enable zabbix-agent 
+				yum install -y zabbix-agent2 
+				systemctl enable zabbix-agent2 
 				sleep 2;
 				echo -e "\e[0m"
 				echo
@@ -111,7 +111,7 @@ zabbix_install () {
 
 			if [ $? -eq 0 ]; then
 
-				yum install -y zabbix-agent 
+				yum install -y zabbix-agent2 
 				chkconfig zabbix-agent on 
 				sleep 2;
 				echo -e "\e[0m"
@@ -140,8 +140,8 @@ zabbix_update () {
 
 		wget -c "$arquivosdl"	
 		#tar xvf $arquivotar -C /tmp
-		cp -v /root/zabbix_agentd.conf  $zabbixdir 2>&1
-		rm -fr /root/zabbix_agentd.conf
+		cp -v /root/zabbix_agentd2.conf  $zabbixdir 2>&1
+		rm -fr /root/zabbix_agentd*
 		#rm -fr $arquivotar
 
 		service zabbix-agent restart
