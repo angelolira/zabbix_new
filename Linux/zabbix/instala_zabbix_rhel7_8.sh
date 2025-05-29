@@ -2,7 +2,7 @@
 clear
 
 #Variaveis de ambiente
-arquivosdl="http://gitlab.unicesumar.edu.br/ito-operacoes/ito-scripts/-/archive/main/ito-scripts-main.tar.gz"
+arquivosdl="https://github.com/angelolira/zabbix_new/blob/main/Linux/zabbix/zabbix_agentd.conf"
 arquivotar="ito-scripts-main.tar.gz"
 zabbixconf="zabbix_agentd.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
@@ -140,10 +140,10 @@ zabbix_update () {
 	if [ -d $zabbixdir ]; then
 
 		wget -c "$arquivosdl"	
-		tar xvf $arquivotar -C /tmp
-		cp -v /tmp/ito-scripts-main/Linux/zabbix/zabbix_agentd.conf  $zabbixdir 2>&1
-		rm -fr /tmp/ito-scripts-main*
-		rm -fr $arquivotar
+		#tar xvf $arquivotar -C /tmp
+		mv -v /tmp/Linux/zabbix/zabbix_agentd.conf  $zabbixdir 2>&1
+		#rm -fr /tmp/ito-scripts-main*
+		#rm -fr $arquivotar
 
 		service zabbix-agent restart
 
