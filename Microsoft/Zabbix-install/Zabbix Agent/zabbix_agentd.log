@@ -1,0 +1,44 @@
+ 17052:20240326:110414.255 Starting Zabbix Agent [MGA-OPERTI-0002]. Zabbix 6.0.23 (revision 315e9acac58).
+ 17052:20240326:110414.255 **** Enabled features ****
+ 17052:20240326:110414.256 IPv6 support:          YES
+ 17052:20240326:110414.256 TLS support:           YES
+ 17052:20240326:110414.256 **************************
+ 17052:20240326:110414.257 using configuration file: C:\Zabbix Agent\zabbix_agentd.conf
+ 17052:20240326:110414.969 agent #0 started [main process]
+ 15696:20240326:110414.970 agent #1 started [collector]
+ 24752:20240326:110414.971 agent #3 started [listener #2]
+ 11336:20240326:110414.971 agent #5 started [listener #4]
+ 14664:20240326:110414.977 agent #10 started [listener #9]
+ 24132:20240326:110414.977 agent #2 started [listener #1]
+ 27116:20240326:110414.978 agent #6 started [listener #5]
+  8080:20240326:110414.978 agent #7 started [listener #6]
+ 26656:20240326:110414.979 agent #8 started [listener #7]
+ 25476:20240326:110414.979 agent #9 started [listener #8]
+  4416:20240326:110414.980 agent #11 started [listener #10]
+ 20340:20240326:110414.980 agent #4 started [listener #3]
+ 18688:20240326:110414.981 agent #12 started [active checks #1]
+ 18688:20240326:110414.986 no active checks on server [172.16.10.113:10051]: host [MGA-OPERTI-0002] not found
+ 24556:20240326:110430.347 Zabbix Agent received stop request.
+ 24556:20240326:110431.360 Zabbix Agent stopped. Zabbix 6.0.23 (revision 315e9acac58).
+ 17296:20240326:110526.194 Starting Zabbix Agent [MGA-OPERTI-0002]. Zabbix 6.0.23 (revision 315e9acac58).
+ 17296:20240326:110526.195 **** Enabled features ****
+ 17296:20240326:110526.195 IPv6 support:          YES
+ 17296:20240326:110526.196 TLS support:           YES
+ 17296:20240326:110526.196 **************************
+ 17296:20240326:110526.197 using configuration file: C:\Zabbix Agent\zabbix_agentd.conf
+ 17296:20240326:110526.933 agent #0 started [main process]
+ 27956:20240326:110526.934 agent #1 started [collector]
+ 19672:20240326:110526.934 agent #4 started [listener #3]
+ 27564:20240326:110526.935 agent #2 started [listener #1]
+ 27488:20240326:110526.935 agent #3 started [listener #2]
+ 22000:20240326:110526.936 agent #6 started [listener #5]
+ 27756:20240326:110526.936 agent #5 started [listener #4]
+ 28368:20240326:110526.937 agent #12 started [active checks #1]
+ 26692:20240326:110526.937 agent #11 started [listener #10]
+ 11764:20240326:110526.938 agent #9 started [listener #8]
+ 19220:20240326:110526.938 agent #7 started [listener #6]
+ 16476:20240326:110526.939 agent #8 started [listener #7]
+ 27128:20240326:110526.939 agent #10 started [listener #9]
+ 28368:20240326:110526.943 active check "system.cpu.util" is not supported: Performance counter is not ready.
+ 26148:20240326:110536.119 Zabbix Agent received stop request.
+ 26148:20240326:110537.131 Zabbix Agent stopped. Zabbix 6.0.23 (revision 315e9acac58).
