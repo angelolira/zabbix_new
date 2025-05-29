@@ -141,7 +141,7 @@ zabbix_update () {
 		wget -c "$arquivosdl"	
 		#tar xvf $arquivotar -C /tmp
 		cp -v /root/zabbix_agent2.conf  $zabbixdir 2>&1
-		rm -fr /root/zabbix_agentd*
+		rm -fr /root/zabbix_agent*
 		#rm -fr $arquivotar
 
 		service zabbix-agent2 restart
