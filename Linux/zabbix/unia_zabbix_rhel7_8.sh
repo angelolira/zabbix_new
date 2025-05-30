@@ -4,6 +4,7 @@ clear
 #Variaveis de ambiente
 arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2.conf"
 arquivotar="zabbix_agent2.conf"
+basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
 zabbixdirextra="/etc/zabbix/zabbix_agentd2.d"
@@ -140,8 +141,8 @@ zabbix_update () {
 
 		wget -c "$arquivosdl"	
 		#tar xvf $arquivotar -C /tmp
-		cp -v /root/zabbix_agent2.conf  $zabbixdir 2>&1
-		rm -fr /root/zabbix_agent*
+		cp -v "$basedir/zabbix_agent2.conf"  $zabbixdir 2>&1
+		rm -fr "$basedir/zabbix_agent*"
 		#rm -fr $arquivotar
 
 		service zabbix-agent2 restart
