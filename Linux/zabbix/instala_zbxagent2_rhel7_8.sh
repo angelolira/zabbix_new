@@ -132,26 +132,26 @@ zabbix_update() {
     echo
     echo -e "\e[1;31mConfigurando Zabbix Agent 2...\e[0m"
     sleep 2
-    if [ -d "$zabbixdir" ]; then
-        if [ -f /home/adm.infra-leoni/zabbix_agent2.conf ]; then
-            mv -v /home/adm.infra-leoni/zabbix_agent2.conf "$zabbixdir/zabbix_agent2.conf"
-        else
-            echo -e "\e[1;31mArquivo de configuracao nao encontrado em /home/adm.infra-leoni\e[0m"
-            exit 1
-        fi
+    if [ -d $zabbixdir ]; then
 
-        systemctl restart zabbix-agent2
+		wget -c "$arquivosdl"	
+		#tar xvf $arquivotar -C /tmp
+		cp -v /root/zabbix_agentd2.conf  $zabbixdir 2>&1
+		rm -fr /root/zabbix_agentd2.conf
+		#rm -fr $arquivotar
 
-        echo
-        echo -e "\e[1;31mZabbix Agent 2 configurado com sucesso.\e[0m"
-        echo -e "\e[1;31mUtilize o nome \e[1;36m$($zabbixexec -t system.hostname | cut -f 2 -d '|' | cut -d ']' -f 1)\e[1;31m para configurar o host no Zabbix.\e[0m"
-        sleep 3
-        echo
-        main
-    else
-        echo -e "\e[1;31mNao encontrado diretorio de instalacao.\e[0m"
-        exit 0
-    fi
+		service zabbix-agent restart
+
+		echo
+		echo -e "\e[1;31mZabbix configurado com sucesso.\e[0m"
+		echo -e "\e[1;31mUtilize o nome \e[1;36m" `$zabbixexec -t system.hostname | cut -f 2 -d "|" | cut -d "]" -f 1` "\e[1;31m para configurar o host\e[0m"
+		sleep 3;
+		echo
+		main
+	else
+		echo -e "\e[1;31mNao encontrado diretorio de instalacao.\e[0m"
+		exit 0;
+	fi
 }
 
 zabbix_remove() {
