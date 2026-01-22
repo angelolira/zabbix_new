@@ -2,7 +2,7 @@
 clear
 
 #Variaveis de ambiente
-arquivosdl="http://gitlab.unicesumar.edu.br/ito-operacoes/ito-scripts/-/archive/main/ito-scripts-main.tar.gz"
+arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd.conf"
 arquivotar="ito-scripts-main.tar.gz"
 zabbixconf="zabbix_agentd.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
