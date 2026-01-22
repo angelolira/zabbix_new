@@ -34,113 +34,110 @@ main() {
     fi
 }
 
-zabbix_install() {
-    echo
-    echo -ne "\e[1;31mVerificando versao do SO... "
+zabbix_install () {
 
-    case $MACHTYPE in
-    x86_64-redhat-linux-gnu)
+	echo 
+	echo -ne  "\e[1;31mVerificando versao do SO... "
 
-        if [[ "$validaversaoSO" =~ el8 ]]; then
-            echo "encontrado SO Linux CentOS/RedHat versao 8 64 bits."
-            echo -e "Iniciando instalacao do Zabbix Agent 2...\e[0m"
-            sleep 2
-            echo
+	case $MACHTYPE in
 
-            pgrep zabbix_agent2 >/dev/null
-            result=$?
+	x86_64-redhat-linux-gnu)
+	
+		if [ "$validaversaoSO" = "el9" ] || [ "$validaversaoSO" = "el9_1" ] || [ "$validaversaoSO" = "el9_2" ] || [ "$validaversaoSO" = "el9_3" ] || [ "$validaversaoSO" = "el9_4" ] || [ "$validaversaoSO" = "el9_5" ] || [ "$validaversaoSO" = "el9_6" ] || [ "$validaversaoSO" = "el9_7" ] || [ "$validaversaoSO" = "el9_8" ] || [ "$validaversaoSO" = "el9_9" ]; then
 
-            if [ "$result" -eq "0" ] || [ -e "$zabbixexec" ]; then
-                echo -ne "\e[1;31mZabbix Agent 2 ja instalado, deseja atualizar? [Y/N] \e[0m"
-                read resultinstall
-                case $resultinstall in
-                [yY]) zabbix_update ;;
-                [nN])
-                    echo -en "\e[1;31mFinalizando script\e[0m"
-                    exit 0
-                    ;;
-                *)
-                    echo -en "\e[1;31mOpcao invalida, utilize Y ou N\e[0m"
-                    sleep 2
-                    zabbix_install
-                    ;;
-                esac
-            fi
+			echo "encontrado SO Linux CentOS/RedHat versao 9 64 bits."
+			echo -e "Iniciando instalacao\e[0m"
+			sleep 2;
+			echo
 
-            rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-4.el8.noarch.rpm 2>&1
+			ps -s | grep zabbix_agentd | grep -v grep 2>&1 
+			result=$?
 
-            if [ $? -eq 0 ]; then
-                yum install -y zabbix-agent2
-                systemctl enable zabbix-agent2
-                sleep 2
-                echo
-                zabbix_update
-            else
-                echo -e "\e[1;31mFalha ao instalar o repositório Zabbix\e[0m"
-                exit 0
-            fi
+			if [ "$result" -eq "0" ]  || [ -e "$zabbixexec" ]; then
+				echo -ne "\e[1;31mZabbix ja existente, deseja atualizar? [Y/N] \e[0m"
+				read resultinstall
+				case $resultinstall in
+				[yY]) zabbix_update;;
+				[nN]) echo -en "\e[1;31mFinalizando script\e[0m"; exit 0;;
+				*) echo -en "\e[1;31mOpcao invalida, utilize Y para Sim ou N para Nao\e[0m" ; sleep 2 ; zabbix_install ;;
+				esac
+			fi
+			#rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-agent-6.0.30-release1.el9.x86_64.rpm 2>&1
+			rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-release-6.0-4.el9.noarch.rpm 2>&1
+				
+			if [ $? -eq 0 ]; then
 
-        elif [[ "$validaversaoSO" =~ el7 ]] || [ "$validaversaoSO" = "" ]; then
-            echo "encontrado SO Linux CentOS/RedHat versao 7 64 bits."
-            echo -e "Iniciando instalacao do Zabbix Agent 2...\e[0m"
-            sleep 2
-            echo
+				yum install -y zabbix-agent 
+				systemctl enable zabbix-agent 
+				sleep 2;
+				echo -e "\e[0m"
+				echo
+				zabbix_update
+			else 
+					echo
+					echo -e "\e[1;31mFalha ao instalar zabbix\e[0m"
+					exit 0;
+			fi
+		
+		
+		elif [ "$validaversaoSO" = "el6" ] || [ "$validaversaoSO" = "" ]; then
+		
+			echo "encontrado SO Linux CentOS/RedHat versao 6 64 bits."
+			echo -e "Iniciando instalacao\e[0m"
+			sleep 2;
+			echo
 
-            pgrep zabbix_agent2 >/dev/null
-            result=$?
+			ps -s | grep zabbix_agentd | grep -v grep 2>&1
+			result=$?
+                        if [ "$result" -eq "0" ]  || [ -e "$zabbixexec" ]; then
+                                echo -ne "\e[1;31mZabbix ja existente, deseja atualizar? [Y/N] \e[0m"
+                                read resultinstall
+                                case $resultinstall in
+                                [yY]) zabbix_update;;
+                                [nN]) echo -en "\e[1;31mFinalizando script\e[0m"; exit 0;;
+                                *) echo -en "\e[1;31mOpcao invalida, utilize Y para Sim ou N para Nao\e[0m" ; sleep 2 ; zabbix_install ;;
+                                esac
+                        fi
+            		#rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-agent-6.0.30-release1.el9.x86_64.rpm 2>&1
+           		#rpm -Uvh http://mirror.centos.org/centos/6/os/x86_64/Packages/pcre2-10.23-2.el7.x86_64.rpm 2>&1
+			rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/6/x86_64/zabbix-release-6.0-4.el6.noarch.rpm 2>&1 
 
-            if [ "$result" -eq "0" ] || [ -e "$zabbixexec" ]; then
-                echo -ne "\e[1;31mZabbix Agent 2 ja instalado, deseja atualizar? [Y/N] \e[0m"
-                read resultinstall
-                case $resultinstall in
-                [yY]) zabbix_update ;;
-                [nN])
-                    echo -en "\e[1;31mFinalizando script\e[0m"
-                    exit 0
-                    ;;
-                *)
-                    echo -en "\e[1;31mOpcao invalida, utilize Y ou N\e[0m"
-                    sleep 2
-                    zabbix_install
-                    ;;
-                esac
-            fi
+			if [ $? -eq 0 ]; then
 
-            rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/7/x86_64/zabbix-release-6.0-4.el7.noarch.rpm 2>&1
+				yum install -y zabbix-agent 
+				chkconfig zabbix-agent on 
+				sleep 2;
+				echo -e "\e[0m"
+				echo
+				zabbix_update
+			else 
+					echo
+					echo -e "\e[1;31mFalha ao instalar zabbix\e[0m"
+					exit 0;
+			fi
 
-            if [ $? -eq 0 ]; then
-                yum install -y zabbix-agent2
-                chkconfig zabbix-agent2 on
-                sleep 2
-                echo
-                zabbix_update
-            else
-                echo -e "\e[1;31mFalha ao instalar o repositório Zabbix\e[0m"
-                exit 0
-            fi
-        fi
-        exit 0
-        ;;
-    *)
-        echo -e "\e[1;31mVersao de SO nao suportada, finalizando script\e[0m"
-        exit 0
-        ;;
-    esac
+		fi
+		exit 0;;
+	*)
+		echo -e "\e[1;31mversao de SO nao suportada, finalizando script\e[0m"
+		exit 0;;
+esac
 }
 
-zabbix_update() {
-    echo
-    echo -e "\e[1;31mConfigurando Zabbix Agent 2...\e[0m"
-    sleep 2
-    if [ -d $zabbixdir ]; then
+zabbix_update () {
+	
+	echo
+	echo -e "\e[1;31mConfigurando zabbix.\e[0m"
+	sleep 2
+	if [ -d $zabbixdir ]; then
 
 		wget -c "$arquivosdl"	
-		#tar xvf $arquivotar -C /tmp
-		cp -v /root/zabbix_agentd2.conf  $zabbixdir 2>&1
-		rm -fr /root/zabbix_agentd2.conf
-		#rm -fr $arquivotar
+		tar xvf $arquivotar -C /tmp
+		cp -v /tmp/ito-scripts-main/Linux/zabbix/zabbix_agentd.conf  $zabbixdir 2>&1
+		rm -fr /tmp/ito-scripts-main*
+		rm -fr $arquivotar
 
-		service zabbix-agent2 restart
+		service zabbix-agent restart
 
 		echo
 		echo -e "\e[1;31mZabbix configurado com sucesso.\e[0m"
@@ -154,30 +151,35 @@ zabbix_update() {
 	fi
 }
 
-zabbix_remove() {
-    echo
-    echo -e "\e[1;31mRemovendo Zabbix Agent 2...\e[0m"
-    echo
-    rpm -qa | grep zabbix-agent2 2>&1
 
-    if [ $? -eq 0 ]; then
-        yum remove zabbix-agent2 -y
-        rpm -e zabbix-release
+zabbix_remove () {
 
-        if [ -d "$zabbixdir" ]; then
-            rm -fr "$zabbixdir"
-            echo
-            echo -e "\e[1;31mRemocao concluida.\e[0m"
-            sleep 2
-            main
-        else
-            echo -e "\e[1;31mDiretorio de instalacao nao localizado para remocao\e[0m"
-            exit 0
-        fi
-    else
-        echo -e "\e[1;31mZabbix Agent 2 nao encontrado, finalizando script\e[0m"
-        exit 0
-    fi
+	echo
+	echo -e "\e[1;31mRemovendo zabbix\e[0m"
+	echo
+	rpm -qa | grep zabbix 2>&1
+
+	if [ $? -eq 0 ];then
+		
+		yum remove zabbix-agent -y
+	 	rpm -e zabbix-release
+		
+		if [ -d $zabbixdir ];then
+			
+			rm -fr $zabbixdir
+			echo
+			echo -e "\e[1;31mRemocao concluida.\e[0m"
+			sleep 2;
+			main
+		else
+			
+			echo -e "\e[1;31mDiretorio de instalacao nao localizado para remocao\e[0m"
+			exit 0;
+		fi
+	else 
+		echo -e "\e[1;31mInstalacao nao localizada via RPM, finalizando script\e[0m"
+		exit 0;
+	fi
 }
 
 main
