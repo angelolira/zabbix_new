@@ -140,7 +140,7 @@ zabbix_update() {
 		rm -fr /root/zabbix_agentd2.conf
 		#rm -fr $arquivotar
 
-		service zabbix-agent restart
+		service zabbix-agent2 restart
 
 		echo
 		echo -e "\e[1;31mZabbix configurado com sucesso.\e[0m"
