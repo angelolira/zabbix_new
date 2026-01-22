@@ -3,7 +3,7 @@ clear
 
 #Variaveis de ambiente
 arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd.conf"
-arquivotar="ito-scripts-main.tar.gz"
+arquivotar="zabbix_agentd.conf"
 zabbixconf="zabbix_agentd.conf"
 zabbixexec="/usr/sbin/zabbix_agentd"
 zabbixdir="/etc/zabbix"
