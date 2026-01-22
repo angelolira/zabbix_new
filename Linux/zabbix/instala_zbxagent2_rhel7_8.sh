@@ -2,8 +2,8 @@
 clear
 
 # Variáveis de ambiente
-arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd2.conf"
-zabbixconf="zabbix_agentd2.conf"
+arquivosdl="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2.conf"
+zabbixconf="zabbix_agent2.conf"
 zabbixexec="/usr/sbin/zabbix_agent2"
 zabbixdir="/etc/zabbix"
 validaversaoSO=$(uname -r | cut -f 6 -d ".")
