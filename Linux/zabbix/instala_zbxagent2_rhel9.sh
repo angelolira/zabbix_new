@@ -133,11 +133,11 @@ zabbix_update () {
 
 		wget -c "$arquivosdl"	
 		tar xvf $arquivotar -C /tmp
-		cp -v /tmp/ito-scripts-main/Linux/zabbix/zabbix_agentd.conf  $zabbixdir 2>&1
+		cp -v /tmp/ito-scripts-main/Linux/zabbix/zabbix_agent2.conf  $zabbixdir 2>&1
 		rm -fr /tmp/ito-scripts-main*
 		rm -fr $arquivotar
 
-		service zabbix-agent restart
+		service zabbix-agent2 restart
 
 		echo
 		echo -e "\e[1;31mZabbix configurado com sucesso.\e[0m"
@@ -161,7 +161,7 @@ zabbix_remove () {
 
 	if [ $? -eq 0 ];then
 		
-		yum remove zabbix-agent -y
+		yum remove zabbix-agent2 -y
 	 	rpm -e zabbix-release
 		
 		if [ -d $zabbixdir ];then
