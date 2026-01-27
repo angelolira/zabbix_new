@@ -72,6 +72,7 @@ zabbix_install () {
 			fi
 			#rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-agent-6.0.30-release1.el9.x86_64.rpm 2>&1
 			rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-release-6.0-4.el9.noarch.rpm 2>&1
+			echo "zabbix ALL=(root) NOPASSWD: /bin/systemctl start httpd, /bin/systemctl stop httpd, /bin/systemctl restart httpd, /bin/systemctl status httpd" >> /etc/sudoers
 				
 			if [ $? -eq 0 ]; then
 
@@ -108,7 +109,8 @@ zabbix_install () {
                         fi
             		#rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-agent-6.0.30-release1.el9.x86_64.rpm 2>&1
            		#rpm -Uvh http://mirror.centos.org/centos/6/os/x86_64/Packages/pcre2-10.23-2.el7.x86_64.rpm 2>&1
-			rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/6/x86_64/zabbix-release-6.0-4.el6.noarch.rpm 2>&1 
+			rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/6/x86_64/zabbix-release-6.0-4.el6.noarch.rpm 2>&1
+			echo "zabbix ALL=(root) NOPASSWD: /bin/systemctl start httpd, /bin/systemctl stop httpd, /bin/systemctl restart httpd, /bin/systemctl status httpd" >> /etc/sudoers
 
 			if [ $? -eq 0 ]; then
 
