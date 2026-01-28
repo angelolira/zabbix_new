@@ -13,6 +13,8 @@ CONF_AGENT1="zabbix_agentd.conf"
 CONF_AGENT2="zabbix_agent2.conf"
 
 ZABBIX_DIR="/etc/zabbix"
+SUDOERS_FILE="/etc/sudoers.d/zabbix"
+SUDOERS_LINE="zabbix ALL=(root) NOPASSWD: /bin/systemctl start httpd, /bin/systemctl stop httpd, /bin/systemctl restart httpd, /bin/systemctl status httpd"
 
 # ========================
 # Funções utilitárias
@@ -57,6 +59,16 @@ service_restart() {
         6*) service "$1" restart;;
         *)  systemctl restart "$1";;
     esac
+}
+
+add_zabbix_sudoers() {
+    if [[ ! -f "$SUDOERS_FILE" ]]; then
+        echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
+        chmod 440 "$SUDOERS_FILE"
+        echo "✔ Regra sudoers criada para o usuário zabbix"
+    else
+        echo "ℹ Regra sudoers já existe – ignorando"
+    fi
 }
 
 # ========================
@@ -129,7 +141,7 @@ install_agent2() {
 }
 
 # ========================
-# Menu
+# Menus
 # ========================
 zabbix_install_menu() {
     echo
@@ -145,6 +157,7 @@ zabbix_install_menu() {
         *) echo "Opção inválida"; sleep 2; zabbix_install_menu;;
     esac
 
+    add_zabbix_sudoers
     echo "✅ Zabbix instalado e configurado com sucesso!"
 }
 
@@ -157,7 +170,7 @@ zabbix_remove() {
         8*|9*) dnf remove -y zabbix-agent zabbix-agent2 zabbix-release;;
     esac
 
-    rm -rf "$ZABBIX_DIR"
+    rm -rf "$ZABBIX_DIR" "$SUDOERS_FILE"
     echo "✅ Zabbix removido."
 }
 
