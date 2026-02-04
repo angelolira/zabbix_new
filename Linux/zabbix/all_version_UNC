@@ -43,6 +43,13 @@ pkg_install() {
     esac
 }
 
+pkg_remove() {
+    case "$OS_VERSION" in
+        6*|7*) yum remove -y "$@";;
+        8*|9*) dnf remove -y "$@";;
+    esac
+}
+
 service_enable() {
     [[ "$OS_VERSION" == 6* ]] && chkconfig "$1" on || systemctl enable "$1"
 }
@@ -113,6 +120,16 @@ install_agent2() {
 }
 
 # ========================
+# Remoção
+# ========================
+zabbix_remove() {
+    echo "🗑 Removendo Zabbix..."
+    pkg_remove zabbix-agent zabbix-agent2 zabbix-release || true
+    rm -rf "$ZABBIX_DIR" "$SUDOERS_FILE"
+    echo "✅ Zabbix removido com sucesso."
+}
+
+# ========================
 # Menus
 # ========================
 choose_site() {
@@ -161,12 +178,14 @@ main_menu() {
     echo "Sistema detectado: $OS_ID $OS_VERSION"
     echo
     echo "1 - Instalar Zabbix"
+    echo "2 - Remover Zabbix"
     echo "0 - Sair"
     echo
     read -rp "Escolha uma opção: " opt
 
     case "$opt" in
         1) zabbix_install_menu;;
+        2) zabbix_remove;;
         0) exit 0;;
         *) echo "Opção inválida"; sleep 2; main_menu;;
     esac
