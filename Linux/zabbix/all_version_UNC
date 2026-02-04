@@ -26,14 +26,9 @@ require_root() {
 }
 
 detect_os() {
-    if [[ -f /etc/os-release ]]; then
-        source /etc/os-release
-        OS_ID="$ID"
-        OS_VERSION="$VERSION_ID"
-    else
-        echo "❌ Não foi possível detectar o sistema operacional."
-        exit 1
-    fi
+    source /etc/os-release
+    OS_ID="$ID"
+    OS_VERSION="$VERSION_ID"
 }
 
 pkg_install() {
@@ -59,12 +54,18 @@ service_restart() {
 }
 
 add_zabbix_sudoers() {
+    if ! id zabbix &>/dev/null; then
+        echo "👤 Criando usuário zabbix..."
+        useradd -r -s /sbin/nologin zabbix
+    fi
+
     if [[ ! -f "$SUDOERS_FILE" ]]; then
+        echo "✍ Criando regra sudoers..."
         echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
         chmod 440 "$SUDOERS_FILE"
-        echo "✔ Regra sudoers criada"
+        visudo -cf "$SUDOERS_FILE" && echo "✔ Sudoers validado"
     else
-        echo "ℹ Regra sudoers já existe – ignorando"
+        echo "ℹ Regra sudoers já existe"
     fi
 }
 
@@ -87,12 +88,11 @@ install_agent1() {
 
     if [[ "$SITE" == "MARINGA" ]]; then
         CONF_URL="$CONF_AGENT1_MARINGA_URL"
+        curl -fsSLo "/root/$CONF_AGENT1" "$CONF_URL"
+        cp -f "/root/$CONF_AGENT1" "$ZABBIX_DIR/$CONF_AGENT1"
     else
-        CONF_URL="$CONF_AGENT1_URL"
+        echo "ℹ Timbó: mantendo conf original"
     fi
-
-    curl -fsSLo "/root/$CONF_AGENT1" "$CONF_URL"
-    cp -f "/root/$CONF_AGENT1" "$ZABBIX_DIR/$CONF_AGENT1"
 }
 
 install_agent2() {
@@ -111,12 +111,11 @@ install_agent2() {
 
     if [[ "$SITE" == "MARINGA" ]]; then
         CONF_URL="$CONF_AGENT2_MARINGA_URL"
+        curl -fsSLo "/root/$CONF_AGENT2" "$CONF_URL"
+        cp -f "/root/$CONF_AGENT2" "$ZABBIX_DIR/$CONF_AGENT2"
     else
-        CONF_URL="$CONF_AGENT2_URL"
+        echo "ℹ Timbó: mantendo conf original"
     fi
-
-    curl -fsSLo "/root/$CONF_AGENT2" "$CONF_URL"
-    cp -f "/root/$CONF_AGENT2" "$ZABBIX_DIR/$CONF_AGENT2"
 }
 
 # ========================
@@ -126,7 +125,7 @@ zabbix_remove() {
     echo "🗑 Removendo Zabbix..."
     pkg_remove zabbix-agent zabbix-agent2 zabbix-release || true
     rm -rf "$ZABBIX_DIR" "$SUDOERS_FILE"
-    echo "✅ Zabbix removido com sucesso."
+    echo "✅ Zabbix removido."
 }
 
 # ========================
@@ -137,7 +136,6 @@ choose_site() {
     echo "Selecione a localidade:"
     echo "1 - MARINGÁ"
     echo "2 - TIMBÓ"
-    echo
     read -rp "Escolha: " site_opt
 
     case "$site_opt" in
@@ -152,7 +150,6 @@ zabbix_install_menu() {
     echo "Qual versão deseja instalar?"
     echo "1 - Zabbix Agent (clássico)"
     echo "2 - Zabbix Agent 2"
-    echo
     read -rp "Escolha: " agent_opt
 
     choose_site
@@ -164,7 +161,7 @@ zabbix_install_menu() {
     esac
 
     add_zabbix_sudoers
-    echo "✅ Zabbix instalado com sucesso para o site: $SITE"
+    echo "🎉 Zabbix instalado para o site: $SITE"
 }
 
 main_menu() {
@@ -175,13 +172,12 @@ main_menu() {
     echo "==============================="
     echo "   INSTALADOR ZABBIX"
     echo "==============================="
-    echo "Sistema detectado: $OS_ID $OS_VERSION"
+    echo "Sistema: $OS_ID $OS_VERSION"
     echo
     echo "1 - Instalar Zabbix"
     echo "2 - Remover Zabbix"
     echo "0 - Sair"
-    echo
-    read -rp "Escolha uma opção: " opt
+    read -rp "Escolha: " opt
 
     case "$opt" in
         1) zabbix_install_menu;;
