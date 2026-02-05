@@ -15,8 +15,13 @@ CONF_AGENT1="zabbix_agentd.conf"
 CONF_AGENT2="zabbix_agent2.conf"
 
 ZABBIX_DIR="/etc/zabbix"
+CUSTOM_CONF="$ZABBIX_DIR/zabbix_agentd.d/custom.conf"
+
 SUDOERS_FILE="/etc/sudoers.d/zabbix"
-SUDOERS_LINE="zabbix ALL=(root) NOPASSWD: /bin/systemctl start httpd, /bin/systemctl stop httpd, /bin/systemctl restart httpd, /bin/systemctl status httpd"
+SUDOERS_LINE="zabbix ALL=(root) NOPASSWD: \
+ /bin/systemctl restart nginx, \
+ /bin/systemctl restart tomcat, \
+ /bin/systemctl restart httpd"
 
 # ========================
 # Funções utilitárias
@@ -54,35 +59,52 @@ service_restart() {
 }
 
 add_zabbix_sudoers() {
-    echo
-    echo "==============================="
-    echo "🔐 Configurando sudoers Zabbix"
-    echo "==============================="
+    echo "🔐 Configurando sudoers para o usuário zabbix..."
 
-    # Cria usuário se não existir
     if ! getent passwd zabbix >/dev/null; then
         echo "👤 Criando usuário zabbix..."
         /usr/sbin/useradd -r -s /sbin/nologin zabbix
-    else
-        echo "👤 Usuário zabbix já existe"
     fi
 
-    # Garante diretório sudoers.d
     mkdir -p /etc/sudoers.d
     chmod 755 /etc/sudoers.d
 
-    # Cria regra
     echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
     chmod 440 "$SUDOERS_FILE"
 
-    # Valida sem quebrar o script
     if /usr/sbin/visudo -cf "$SUDOERS_FILE"; then
-        echo "✔ Sudoers validado com sucesso"
+        echo "✔ Regra sudoers criada e validada"
     else
         echo "❌ Erro no sudoers! Removendo regra..."
         rm -f "$SUDOERS_FILE"
         exit 1
     fi
+}
+
+add_userparameters() {
+    echo "📊 Criando UserParameters..."
+
+    mkdir -p "$ZABBIX_DIR/zabbix_agentd.d"
+
+    cat > "$CUSTOM_CONF" <<'EOF'
+# Custom UserParameters - Monitoramento
+
+# Disco
+UserParameter=disk.usage,df -h
+
+# Memória
+UserParameter=mem.usage,free -m
+
+# CPU / Top
+UserParameter=cpu.top,top -b -n1 | head -20
+
+# Restart de serviços (via sudo)
+UserParameter=svc.restart.nginx,sudo /bin/systemctl restart nginx
+UserParameter=svc.restart.tomcat,sudo /bin/systemctl restart tomcat
+UserParameter=svc.restart.httpd,sudo /bin/systemctl restart httpd
+EOF
+
+    echo "✔ UserParameters criados em $CUSTOM_CONF"
 }
 
 # ========================
@@ -181,6 +203,9 @@ zabbix_install_menu() {
     esac
 
     add_zabbix_sudoers
+    add_userparameters
+    service_restart zabbix-agent || service_restart zabbix-agent2
+
     echo "🎉 Zabbix instalado com sucesso para o site: $SITE"
 }
 
