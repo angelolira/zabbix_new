@@ -94,12 +94,14 @@ install_agent1() {
     service_restart zabbix-agent
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        echo "📥 Aplicando conf de MARINGÁ (Agent clássico)"
-        curl -fsSLo "/root/$CONF_AGENT1" "$CONF_AGENT1_MARINGA_URL"
-        cp -f "/root/$CONF_AGENT1" "$ZABBIX_DIR/$CONF_AGENT1"
+        CONF_URL="$CONF_AGENT1_MARINGA_URL"
     else
-        echo "ℹ TIMBÓ: mantendo configuração padrão"
+        CONF_URL="$CONF_AGENT1_URL"
     fi
+
+    echo "📥 Aplicando conf: $CONF_URL"
+    curl -fsSLo "/root/$CONF_AGENT1" "$CONF_URL"
+    cp -f "/root/$CONF_AGENT1" "$ZABBIX_DIR/$CONF_AGENT1"
 }
 
 install_agent2() {
@@ -117,12 +119,14 @@ install_agent2() {
     service_restart zabbix-agent2
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        echo "📥 Aplicando conf de MARINGÁ (Agent2)"
-        curl -fsSLo "/root/$CONF_AGENT2" "$CONF_AGENT2_MARINGA_URL"
-        cp -f "/root/$CONF_AGENT2" "$ZABBIX_DIR/$CONF_AGENT2"
+        CONF_URL="$CONF_AGENT2_MARINGA_URL"
     else
-        echo "ℹ TIMBÓ: mantendo configuração padrão"
+        CONF_URL="$CONF_AGENT2_URL"
     fi
+
+    echo "📥 Aplicando conf: $CONF_URL"
+    curl -fsSLo "/root/$CONF_AGENT2" "$CONF_URL"
+    cp -f "/root/$CONF_AGENT2" "$ZABBIX_DIR/$CONF_AGENT2"
 }
 
 # ========================
