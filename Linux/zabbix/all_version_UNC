@@ -54,18 +54,25 @@ service_restart() {
 }
 
 add_zabbix_sudoers() {
+    echo "🔐 Configurando sudoers para o usuário zabbix..."
+
     if ! id zabbix &>/dev/null; then
         echo "👤 Criando usuário zabbix..."
         useradd -r -s /sbin/nologin zabbix
     fi
 
-    if [[ ! -f "$SUDOERS_FILE" ]]; then
-        echo "✍ Criando regra sudoers..."
-        echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
-        chmod 440 "$SUDOERS_FILE"
-        visudo -cf "$SUDOERS_FILE" && echo "✔ Sudoers validado"
+    mkdir -p /etc/sudoers.d
+    chmod 755 /etc/sudoers.d
+
+    echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
+    chmod 440 "$SUDOERS_FILE"
+
+    if visudo -cf "$SUDOERS_FILE"; then
+        echo "✔ Regra sudoers criada e validada com sucesso"
     else
-        echo "ℹ Regra sudoers já existe"
+        echo "❌ Erro na regra sudoers! Removendo arquivo..."
+        rm -f "$SUDOERS_FILE"
+        exit 1
     fi
 }
 
@@ -87,11 +94,11 @@ install_agent1() {
     service_restart zabbix-agent
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        CONF_URL="$CONF_AGENT1_MARINGA_URL"
-        curl -fsSLo "/root/$CONF_AGENT1" "$CONF_URL"
+        echo "📥 Aplicando conf de MARINGÁ (Agent clássico)"
+        curl -fsSLo "/root/$CONF_AGENT1" "$CONF_AGENT1_MARINGA_URL"
         cp -f "/root/$CONF_AGENT1" "$ZABBIX_DIR/$CONF_AGENT1"
     else
-        echo "ℹ Timbó: mantendo conf original"
+        echo "ℹ TIMBÓ: mantendo configuração padrão"
     fi
 }
 
@@ -110,11 +117,11 @@ install_agent2() {
     service_restart zabbix-agent2
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        CONF_URL="$CONF_AGENT2_MARINGA_URL"
-        curl -fsSLo "/root/$CONF_AGENT2" "$CONF_URL"
+        echo "📥 Aplicando conf de MARINGÁ (Agent2)"
+        curl -fsSLo "/root/$CONF_AGENT2" "$CONF_AGENT2_MARINGA_URL"
         cp -f "/root/$CONF_AGENT2" "$ZABBIX_DIR/$CONF_AGENT2"
     else
-        echo "ℹ Timbó: mantendo conf original"
+        echo "ℹ TIMBÓ: mantendo configuração padrão"
     fi
 }
 
@@ -161,7 +168,7 @@ zabbix_install_menu() {
     esac
 
     add_zabbix_sudoers
-    echo "🎉 Zabbix instalado para o site: $SITE"
+    echo "🎉 Zabbix instalado com sucesso para o site: $SITE"
 }
 
 main_menu() {
