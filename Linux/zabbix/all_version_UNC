@@ -54,23 +54,32 @@ service_restart() {
 }
 
 add_zabbix_sudoers() {
-    echo "🔐 Configurando sudoers para o usuário zabbix..."
+    echo
+    echo "==============================="
+    echo "🔐 Configurando sudoers Zabbix"
+    echo "==============================="
 
-    if ! id zabbix &>/dev/null; then
+    # Cria usuário se não existir
+    if ! getent passwd zabbix >/dev/null; then
         echo "👤 Criando usuário zabbix..."
-        useradd -r -s /sbin/nologin zabbix
+        /usr/sbin/useradd -r -s /sbin/nologin zabbix
+    else
+        echo "👤 Usuário zabbix já existe"
     fi
 
+    # Garante diretório sudoers.d
     mkdir -p /etc/sudoers.d
     chmod 755 /etc/sudoers.d
 
+    # Cria regra
     echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
     chmod 440 "$SUDOERS_FILE"
 
-    if visudo -cf "$SUDOERS_FILE"; then
-        echo "✔ Regra sudoers criada e validada com sucesso"
+    # Valida sem quebrar o script
+    if /usr/sbin/visudo -cf "$SUDOERS_FILE"; then
+        echo "✔ Sudoers validado com sucesso"
     else
-        echo "❌ Erro na regra sudoers! Removendo arquivo..."
+        echo "❌ Erro no sudoers! Removendo regra..."
         rm -f "$SUDOERS_FILE"
         exit 1
     fi
