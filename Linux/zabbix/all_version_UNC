@@ -63,11 +63,11 @@ add_zabbix_sudoers() {
         useradd -r -s /sbin/nologin zabbix
     fi
 
-    echo "✍ Criando regra sudoers..."
+    echo "✍ Criando sudoers do zabbix..."
     echo "$SUDOERS_LINE" > "$SUDOERS_FILE"
     chmod 440 "$SUDOERS_FILE"
     visudo -cf "$SUDOERS_FILE"
-    echo "✔ Sudoers do zabbix validado"
+    echo "✔ Sudoers validado"
 }
 
 add_userparameters() {
@@ -98,10 +98,12 @@ install_agent1() {
     service_enable zabbix-agent
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        curl -fsSLo "$ZABBIX_DIR/$CONF_AGENT1" "$CONF_AGENT1_MARINGA_URL"
+        CONF_URL="$CONF_AGENT1_MARINGA_URL"
     else
-        echo "ℹ Timbó: mantendo conf original"
+        CONF_URL="$CONF_AGENT1_URL"
     fi
+
+    curl -fsSLo "$ZABBIX_DIR/$CONF_AGENT1" "$CONF_URL"
 
     add_userparameters
     add_zabbix_sudoers
@@ -122,10 +124,12 @@ install_agent2() {
     service_enable zabbix-agent2
 
     if [[ "$SITE" == "MARINGA" ]]; then
-        curl -fsSLo "$ZABBIX_DIR/$CONF_AGENT2" "$CONF_AGENT2_MARINGA_URL"
+        CONF_URL="$CONF_AGENT2_MARINGA_URL"
     else
-        echo "ℹ Timbó: mantendo conf original"
+        CONF_URL="$CONF_AGENT2_URL"
     fi
+
+    curl -fsSLo "$ZABBIX_DIR/$CONF_AGENT2" "$CONF_URL"
 
     add_userparameters
     add_zabbix_sudoers
