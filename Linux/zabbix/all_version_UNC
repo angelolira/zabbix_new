@@ -18,9 +18,13 @@ ZABBIX_DIR="/etc/zabbix"
 SUDOERS_FILE="/etc/sudoers.d/zabbix"
 
 SUDOERS_LINE='zabbix ALL=(root) NOPASSWD: \
-/bin/systemctl restart nginx, \
-/bin/systemctl restart tomcat, \
-/bin/systemctl restart httpd'
+/usr/local/bin/zbx_admin_sudo, \
+/usr/bin/systemctl restart *, \
+/usr/bin/find *, \
+/usr/bin/grep, \
+/usr/bin/tail, \
+/usr/local/bin/zbx_admin_sudo, \
+/usr/bin/df'
 
 # ========================
 # Funções utilitárias
