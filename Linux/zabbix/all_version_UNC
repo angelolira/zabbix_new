@@ -76,6 +76,7 @@ add_zabbix_sudoers() {
 
 add_userparameters() {
     local UP_FILE="$ZABBIX_DIR/zabbix_agentd.d/custom_linux.conf"
+   #local UP_FILE="$ZABBIX_DIR/zabbix_agent2.d/custom_linux.conf"
     echo "➕ Criando UserParameters..."
 
     cat > "$UP_FILE" <<EOF
