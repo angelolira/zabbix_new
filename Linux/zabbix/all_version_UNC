@@ -80,9 +80,13 @@ add_userparameters() {
     echo "➕ Criando UserParameters..."
 
     cat > "$UP_FILE" <<EOF
-UserParameter=custom.df,df -h
-UserParameter=custom.free,free -m
-UserParameter=custom.top,top -b -n1 | head -20
+zabbix ALL=(root) NOPASSWD: /usr/local/bin/zbx_admin_sudo
+zabbix ALL=(root) NOPASSWD: /usr/bin/systemctl restart *
+zabbix ALL=(root) NOPASSWD: /usr/bin/find *
+zabbix ALL=(root) NOPASSWD: /usr/bin/grep
+zabbix ALL=(root) NOPASSWD: /usr/bin/tail
+zabbix ALL=(root) NOPASSWD: /usr/local/bin/zbx_admin_sudo
+zabbix ALL=(root) NOPASSWD: /usr/bin/df
 
 EOF
 }
