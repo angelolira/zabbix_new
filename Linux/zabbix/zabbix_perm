@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# ================================
+# Configuração
+# ================================
+SUDOERS_FILE="/etc/sudoers.d/zabbix"
+USERPARAM_DIR="/etc/zabbix/zabbix_agentd.d"
+USERPARAM_FILE="$USERPARAM_DIR/custom_commands.conf"
+
+echo "================================="
+echo " Configurando permissões Zabbix "
+echo "================================="
+
+# Verificar root
+if [ "$(id -u)" != "0" ]; then
+    echo "Execute como root."
+    exit 1
+fi
+
+# Criar diretório se não existir
+mkdir -p $USERPARAM_DIR
+
+echo "Criando UserParameters..."
+
+cat > $USERPARAM_FILE <<EOF
+UserParameter=custom.df,sudo /usr/bin/df -h
+UserParameter=custom.find,sudo /usr/bin/find / -maxdepth 1
+UserParameter=custom.tail,sudo /usr/bin/tail -n 10 /var/log/messages
+UserParameter=custom.grep,sudo /usr/bin/grep ERROR /var/log/messages
+UserParameter=apache.restart,sudo /usr/bin/systemctl restart httpd
+EOF
+
+echo "✔ UserParameters criados em $USERPARAM_FILE"
+
+echo "Criando sudoers..."
+
+cat > $SUDOERS_FILE <<EOF
+zabbix ALL=(root) NOPASSWD: /usr/local/bin/zbx_admin_sudo
+zabbix ALL=(root) NOPASSWD: /usr/bin/systemctl restart *
+zabbix ALL=(root) NOPASSWD: /usr/bin/find *
+zabbix ALL=(root) NOPASSWD: /usr/bin/grep
+zabbix ALL=(root) NOPASSWD: /usr/bin/tail
+zabbix ALL=(root) NOPASSWD: /usr/bin/df
+zabbix ALL=(root) NOPASSWD: /usr/bin/docker *
+EOF
+
+chmod 440 $SUDOERS_FILE
+
+echo "Validando sudoers..."
+visudo -cf $SUDOERS_FILE
+
+if [ $? -ne 0 ]; then
+    echo "Erro no sudoers! Arquivo não aplicado."
+    exit 1
+fi
+
+echo "✔ sudoers validado"
+
+echo "Reiniciando Zabbix Agent..."
+
+if systemctl list-unit-files | grep -q zabbix-agent2; then
+    systemctl restart zabbix-agent2
+else
+    systemctl restart zabbix-agent
+fi
+
+echo "================================="
+echo " Configuração finalizada "
+echo "================================="
