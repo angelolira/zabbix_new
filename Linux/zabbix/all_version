@@ -6,11 +6,11 @@ clear
 # Variáveis
 # ========================
 
-CONF_AGENT1_URL=
-CONF_AGENT2_URL=
+CONF_AGENT1_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentd.conf"
+CONF_AGENT2_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2.conf"
 
-CONF_AGENT1_MARINGA_URL=
-CONF_AGENT2_MARINGA_URL=
+CONF_AGENT1_MARINGA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentMGA.conf"
+CONF_AGENT2_MARINGA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2MGA.conf"
 
 CONF_AGENT1="zabbix_agentd.conf"
 CONF_AGENT2="zabbix_agent2.conf"
