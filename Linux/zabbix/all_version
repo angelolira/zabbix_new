@@ -96,6 +96,7 @@ zabbix ALL=(root) NOPASSWD: /usr/bin/find *
 zabbix ALL=(root) NOPASSWD: /usr/bin/grep
 zabbix ALL=(root) NOPASSWD: /usr/bin/tail
 zabbix ALL=(root) NOPASSWD: /usr/bin/df
+zabbix ALL=(root) NOPASSWD: /usr/bin/docker *
 EOF
 
     chmod 440 "$SUDOERS_FILE"
