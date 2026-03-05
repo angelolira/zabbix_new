@@ -25,6 +25,7 @@ SUDOERS_LINE='zabbix ALL=(root) NOPASSWD: \
 /usr/bin/tail, \
 /usr/local/bin/zbx_admin_sudo, \
 /usr/bin/df'
+/usr/bin/docker *'
 
 # ========================
 # Funções utilitárias
