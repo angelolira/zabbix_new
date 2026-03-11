@@ -271,6 +271,7 @@ choose_site() {
     case "$site_opt" in
         1) SITE="MARINGA";;
         2) SITE="TIMBO";;
+        3) 2) SITE="BATATA";;
         *) echo "Opção inválida"; sleep 2; choose_site;;
     esac
 }
