@@ -12,7 +12,7 @@ CONF_AGENT2_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/he
 CONF_AGENT1_MARINGA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agentMGA.conf"
 CONF_AGENT2_MARINGA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2MGA.conf"
 
-CONF_AGENT2_BATATA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2UNA.conf"
+CONF_AGENT2_UNA_URL="https://raw.githubusercontent.com/angelolira/zabbix_new/refs/heads/main/Linux/zabbix/zabbix_agent2UNA.conf"
 
 CONF_AGENT1="zabbix_agentd.conf"
 CONF_AGENT2="zabbix_agent2.conf"
@@ -189,10 +189,10 @@ install_agent2() {
 
     if [[ "$SITE" == "MARINGA" ]]; then
         CONF_URL="$CONF_AGENT2_MARINGA_URL"
-    if [[ "$SITE" == "TIMBO" ]]; then
+    elif [[ "$SITE" == "TIMBO" ]]; then
         CONF_URL="$CONF_AGENT2_URL"
-    else
-       CONF_URL="$CONF_AGENT2_batata_URL"
+    elif [[ "$SITE" == "UNIASSELVI" ]]; then
+       CONF_URL="$CONF_AGENT2_UNA_URL"
     fi
 
     curl -fsSLo "$ZABBIX_DIR/$CONF_AGENT2" "$CONF_URL"
@@ -238,7 +238,7 @@ choose_site() {
     case "$site_opt" in
         1) SITE="MARINGA";;
         2) SITE="TIMBO";;
-        3) 2) SITE="BATATA";;
+        3) SITE="BATATA";;
         *) echo "Opção inválida"; sleep 2; choose_site;;
     esac
 }
