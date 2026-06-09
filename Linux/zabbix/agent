@@ -1,0 +1,19 @@
+Server=
+ServerActive=
+Hostname=
+AllowKey=system.run[*]
+DenyKey=system.run[sudo]
+#HostMetadata=
+HostMetadataItem=system.run[systemctl list-units --type=service --state=running]
+ 
+ 
+Unicesumar
+- 172.16.10.49 - TIMBO
+- 172.16.8.22 - MGA
+Uniasselvi
+- 10.191.0.24 – TIMBO
+ 
+Servidores UNICESUMAR
+VITRU-UNICESUMAR-SRV-LNX-($HOSTNAME)
+Servidores UNIASSELVI
+VITRU-UNIASSELVI-SRV-LNX-($HOSTNAME)
